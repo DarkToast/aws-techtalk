@@ -1,0 +1,28 @@
+variables:
+  S3_BUCKET: ciw-deploy
+  AWS_DEFAULT_REGION: eu-central-1
+
+stages:
+  - test
+  - deploy
+
+Test:
+  stage: test
+  image: node:10.15
+  services:
+    - amazon/dynamodb-local
+  script:
+    - npm install
+    - npm test
+  tags:
+    - docker
+
+deploy:
+  stage: deploy
+  image: docker-registry-bn-01.lan.tarent.de/aws-sam-cli
+  script:
+    - sh deploy-to-aws.sh $S3_BUCKET dev
+  only:
+    - master
+  tags:
+    - docker

@@ -1,0 +1,94 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+
+Parameters:
+  Stage:
+    Type: String
+
+Resources:
+  PutHandler:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: /
+      Handler: index.handlePut
+      Runtime: nodejs10.x
+      Role: !GetAtt AwsTechTalkRole.Arn
+      Environment:
+        Variables:
+          LOG_FORMAT: json
+          LOG_LEVEL: debug
+      Tags:
+        AdministratorEmail: hrs-team@lists.tarent.de
+        Application: AwsTechTalk
+        Environment: !Ref Stage
+        Name: PutHandler
+
+  GetHandler:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: /
+      Handler: index.handleGet
+      Runtime: nodejs10.x
+      Role: !GetAtt AwsTechTalkRole.Arn
+      Environment:
+        Variables:
+          LOG_FORMAT: json
+          LOG_LEVEL: debug
+      Tags:
+        AdministratorEmail: hrs-team@lists.tarent.de
+        Application: AwsTechTalk
+        Environment: !Ref Stage
+        Name: HotelMasterDataHandler
+
+  KeyStore:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: !Sub "${Stage}-KeyStore"
+      AttributeDefinitions:
+        - AttributeName: 'key'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'key'
+          KeyType: 'HASH'
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      Tags:
+        - Key: "AdministratorEmail"
+          Value: "hrs-team@lists.tarent.de"
+        - Key: "Application"
+          Value: "AwsTechTalk"
+        - Key: "Environment"
+          Value: !Ref Stage
+        - Key: "Name"
+          Value: !Sub "${Stage}-KeyStore"
+
+  AwsTechTalkRole:
+    Description: Service role for AwsTechTalk lambdas
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [ "lambda.amazonaws.com" ]
+            },
+            "Action": [ "sts:AssumeRole" ]
+          }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+      Policies:
+        - PolicyName: KeyStorePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:*
+                Resource: !GetAtt KeyStore.Arn

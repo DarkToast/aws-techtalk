@@ -1,0 +1,29 @@
+{
+  "name": "aws-techtalk",
+  "version": "1.0.0",
+  "description": "A runtime example of some AWS elements",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha --recursive --timeout 20000",
+    "eslint": "eslint index*.js src",
+    "eslint:fix": "eslint --fix index*.js src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.tarent.de:dynamo-duisdorf/aws-techtalk.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "aws-sdk": "2.410.0",
+    "chai": "4.2.0",
+    "expect": "24.1.0",
+    "mocha": "4.1.0",
+    "docker-compose-mocha": "1.2.0",
+    "nock": "^10.0.6",
+    "license-report": "^2.2.0"
+  },
+  "author": "",
+  "license": "ISC"
+}
