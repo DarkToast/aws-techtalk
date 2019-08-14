@@ -6,8 +6,13 @@ const keyStoreDb = KeyStoreDatabase(awsDynamoDb, process.env.KEY_STORE_REF);
 
 async function handlePut(event, context) {
     console.log(`Got event for handlePut: ${JSON.stringify(event)}`);
+    const body = JSON.parse(event.body);
+    const data = {
+        key: event.pathParameters.key,
+        value: body.value
+    };
 
-    await keyStoreDb.save(event);
+    await keyStoreDb.save(data);
 
     return {
         statusCode: 200
@@ -16,8 +21,8 @@ async function handlePut(event, context) {
 
 async function handleGet(event, context) {
     console.log(`Got event for handleGet: ${JSON.stringify(event)}`);
-
-    let result = await keyStoreDb.load(event.key);
+    const key = event.pathParameters.key;
+    let result = await keyStoreDb.load(key);
 
     return {
         statusCode: 200,

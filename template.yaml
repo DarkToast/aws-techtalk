@@ -18,6 +18,12 @@ Resources:
           LOG_FORMAT: json
           LOG_LEVEL: debug
           KEY_STORE_REF: !Ref KeyStore
+      Events:
+        Put:
+         Type: Api
+         Properties:
+           Path: /store/{key}
+           Method: put
       Tags:
         AdministratorEmail: hrs-team@lists.tarent.de
         Application: AwsTechTalk
@@ -36,6 +42,12 @@ Resources:
           LOG_FORMAT: json
           LOG_LEVEL: debug
           KEY_STORE_REF: !Ref KeyStore
+      Events:
+        Put:
+          Type: Api
+          Properties:
+            Path: /store/{key}
+            Method: get
       Tags:
         AdministratorEmail: hrs-team@lists.tarent.de
         Application: AwsTechTalk

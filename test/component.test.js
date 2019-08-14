@@ -13,7 +13,7 @@ describe('Component tests', () => {
         it('returns status 200', async () => {
             // given: An item exists in the database and an event exists
             await putItem({key: testKey, value: testValue});
-            let event = {key: testKey};
+            let event = {pathParameters: {key: testKey}};
 
             // when: The get handler is called
             let result = await handleGet(event);
@@ -30,7 +30,7 @@ describe('Component tests', () => {
     describe('The post handler', () => {
         it('returns status 200', async () => {
             // given: A put event exists
-            let event = {key: testKey, value: testValue};
+            let event = {pathParameters: {key: testKey}, body: `{ "value": "${testValue}" }`};
 
             // when: The put handler is called
             let result = await handlePut(event);
