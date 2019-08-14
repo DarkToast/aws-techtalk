@@ -17,7 +17,7 @@ Resources:
         Variables:
           LOG_FORMAT: json
           LOG_LEVEL: debug
-          DATABASE_REF: !Ref KeyStore
+          KEY_STORE_REF: !Ref KeyStore
       Tags:
         AdministratorEmail: hrs-team@lists.tarent.de
         Application: AwsTechTalk
@@ -35,7 +35,7 @@ Resources:
         Variables:
           LOG_FORMAT: json
           LOG_LEVEL: debug
-          DATABASE_REF: !Ref KeyStore
+          KEY_STORE_REF: !Ref KeyStore
       Tags:
         AdministratorEmail: hrs-team@lists.tarent.de
         Application: AwsTechTalk
