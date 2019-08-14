@@ -1,11 +1,10 @@
 let KeyStoreDb = function KeyStoreDb(dynamoDb, tableName) {
+
     let load = async function load(key) {
         const params = {
             TableName: tableName,
             Key: {
-                key: {
-                    S: key
-                }
+                key: {S: key}
             }
         };
 
@@ -33,7 +32,7 @@ let KeyStoreDb = function KeyStoreDb(dynamoDb, tableName) {
             }
         };
 
-        dynamoDb.putItem(params).promise()
+        return dynamoDb.putItem(params).promise()
             .then(function() {
                 console.log('Saved item to database.');
             });
