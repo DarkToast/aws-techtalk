@@ -2,6 +2,8 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 
 Parameters:
+  loglevel:
+    Type: String
   Stage:
     Type: String
 
@@ -16,7 +18,7 @@ Resources:
       Environment:
         Variables:
           LOG_FORMAT: json
-          LOG_LEVEL: debug
+          LOG_LEVEL: !Ref loglevel
           KEY_STORE_REF: !Ref KeyStore
       Events:
         Put:
@@ -24,11 +26,6 @@ Resources:
          Properties:
            Path: /store/{key}
            Method: put
-      Tags:
-        AdministratorEmail: hrs-team@lists.tarent.de
-        Application: AwsTechTalk
-        Environment: !Ref Stage
-        Name: PutHandler
 
   GetHandler:
     Type: 'AWS::Serverless::Function'
@@ -40,7 +37,7 @@ Resources:
       Environment:
         Variables:
           LOG_FORMAT: json
-          LOG_LEVEL: debug
+          LOG_LEVEL: !Ref loglevel
           KEY_STORE_REF: !Ref KeyStore
       Events:
         Put:
@@ -48,11 +45,6 @@ Resources:
           Properties:
             Path: /store/{key}
             Method: get
-      Tags:
-        AdministratorEmail: hrs-team@lists.tarent.de
-        Application: AwsTechTalk
-        Environment: !Ref Stage
-        Name: GetHandler
 
   KeyStore:
     Type: 'AWS::DynamoDB::Table'
@@ -67,15 +59,6 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
-      Tags:
-        - Key: "AdministratorEmail"
-          Value: "hrs-team@lists.tarent.de"
-        - Key: "Application"
-          Value: "AwsTechTalk"
-        - Key: "Environment"
-          Value: !Ref Stage
-        - Key: "Name"
-          Value: !Sub "${Stage}-KeyStore"
 
   AwsTechTalkRole:
     Description: Service role for AwsTechTalk lambdas

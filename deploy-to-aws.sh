@@ -10,4 +10,5 @@ sam deploy --template-file ./packaged.yaml \
     --stack-name ${STAGE}-techtalk \
     --capabilities CAPABILITY_IAM \
     --parameter-overrides \
+        loglevel="debug" \
         Stage=${STAGE}
