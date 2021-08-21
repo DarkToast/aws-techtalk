@@ -13,7 +13,7 @@ Resources:
     Properties:
       CodeUri: /
       Handler: index.handlePut
-      Runtime: nodejs10.x
+      Runtime: nodejs14.x
       Role: !GetAtt AwsTechTalkRole.Arn
       Environment:
         Variables:
@@ -32,7 +32,7 @@ Resources:
     Properties:
       CodeUri: /
       Handler: index.handleGet
-      Runtime: nodejs10.x
+      Runtime: nodejs14.x
       Role: !GetAtt AwsTechTalkRole.Arn
       Environment:
         Variables:
